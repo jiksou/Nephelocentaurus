@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nephelocentauros Configuration</title>
   <style>
+	  @font-face {
+  font-family: 'CustomFont';
+  src: url('/font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
     :root {
       --primary-color: #24936E;
       --background-color: #080808;
@@ -16,7 +22,7 @@
     }
 
     body {
-      font-family: 'Open Sans', sans-serif;
+      font-family: 'CustomFont', 'Open Sans', sans-serif;
       margin: 0;
       padding: 0;
       background-color: var(--background-color);
@@ -164,7 +170,7 @@
         <h3>Configuration Reset</h3>
         <p>Clear all custom parameters:</p>
         <form action="/reset" method="get">
-          <input type="submit" value="Purge EEPROM">
+          <input type="submit" value="Purge Parameters">
         </form>
       </div>
       <form method='get' action='setting'>
