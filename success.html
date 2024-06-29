@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Success</title>
+  <style>
+    :root {
+      --primary-color: #24936E;
+      --background-color: #080808;
+      --surface-color: #1C1C1C;
+      --text-color: #E0E0E0;
+      --secondary-text-color: #A0A0A0;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    #container {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .top-bar {
+      background-color: var(--surface-color);
+      color: var(--text-color);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .top-bar h1 {
+      margin: 20px;
+      font-size: 48px;
+      font-weight: 2400;
+    }
+
+    .content {
+      padding: 24px;
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-top: 32px;
+      font-weight: 2400;
+    }
+
+    .info-box {
+      background-color: var(--surface-color);
+      border-left: 4px solid var(--primary-color);
+      padding: 16px;
+      margin: 16px 0;
+      border-radius: 8px;
+    }
+
+    @media (min-width: 640px) {
+      #container {
+        max-width: 640px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div class="top-bar">
+      <h1>Nephelocentaurus</h1>
+      <p>Configuration Success</p>
+    </div>
+    <div class="content">
+      <div class="info-box">
+        <h2>Success!</h2>
+        <p>Configuration successfully saved to EEPROM.</p>
+        <p>ESP32 will now disconnect and reboot.</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

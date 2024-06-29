@@ -208,37 +208,6 @@
       </form>
     </div>
   </div>
-
-  <script>
-    document.querySelector('form[action="setting"]').addEventListener('submit', function(e) {
-      e.preventDefault();
-      showDialog('Configuration successfully saved to EEPROM. ESP32 will now reboot.');
-    });
-
-    document.querySelector('form[action="/reset"]').addEventListener('submit', function(e) {
-      e.preventDefault();
-      showDialog('All settings have been reset to defaults.');
-    });
-
-    function showDialog(message) {
-      const dialog = document.createElement('div');
-      dialog.className = 'dialog-overlay';
-      dialog.innerHTML = `
-        <div class="dialog-content">
-          <p>${message}</p>
-          <button class="dialog-button" onclick="closeDialog()">OK</button>
-        </div>
-      `;
-      document.body.appendChild(dialog);
-    }
-
-    function closeDialog() {
-      const dialog = document.querySelector('.dialog-overlay');
-      if (dialog) {
-        dialog.remove();
-      }
-    }
-  </script>
 </body>
 
 </html>
