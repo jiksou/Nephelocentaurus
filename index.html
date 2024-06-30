@@ -214,6 +214,30 @@
       </form>
     </div>
   </div>
+	<script>
+document.getElementById('settingsForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  var formData = new FormData(this);
+  
+  fetch('/setting', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.success) {
+      alert(data.message);
+      // You can replace alert with a more sophisticated popup if desired
+    } else {
+      alert('An error occurred while saving settings.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while saving settings.');
+  });
+});
+</script>
 </body>
-
 </html>
