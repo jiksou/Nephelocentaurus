@@ -219,32 +219,38 @@
 document.getElementById('settingsForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
-  var formData = new FormData(this);
+  var formData = new URLSearchParams(new FormData(this)).toString();
   
-  fetch('/setting', {
-    method: 'GET',
-    body: new URLSearchParams(formData)
+  fetch('/setting?' + formData, {
+    method: 'GET'
   })
   .then(response => response.json())
   .then(data => {
+    var overlay = document.createElement('div');
+    overlay.className = 'dialog-overlay';
+    
+    var popup = document.createElement('div');
+    popup.className = 'dialog-content';
+    
     if (data.success) {
-      // Create and show a custom popup
-      var overlay = document.createElement('div');
-      overlay.className = 'dialog-overlay';
-      
-      var popup = document.createElement('div');
-      popup.className = 'dialog-content';
       popup.innerHTML = '<h2>Success</h2><p>' + data.message + '</p><button class="dialog-button" onclick="this.closest(\'.dialog-overlay\').remove()">Close</button>';
-      
-      overlay.appendChild(popup);
-      document.body.appendChild(overlay);
     } else {
-      alert('An error occurred while saving settings.');
+      popup.innerHTML = '<h2>Error</h2><p>An error occurred while saving settings.</p><button class="dialog-button" onclick="this.closest(\'.dialog-overlay\').remove()">Close</button>';
     }
+    
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
   })
   .catch(error => {
-    console.error('Error:', error);
-    alert('An error occurred while saving settings.');
+    var overlay = document.createElement('div');
+    overlay.className = 'dialog-overlay';
+    
+    var popup = document.createElement('div');
+    popup.className = 'dialog-content';
+    popup.innerHTML = '<h2>Error</h2><p>' + error.message + '</p><button class="dialog-button" onclick="this.closest(\'.dialog-overlay\').remove()">Close</button>';
+    
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
   });
 });
 
