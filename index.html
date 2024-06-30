@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nephelocentauros Configuration</title>
   <style>
-	  @font-face {
-  font-family: 'CustomFont';
-  src: url('/font.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+    @font-face {
+      font-family: 'CustomFont';
+      src: url('/font.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
     :root {
       --primary-color: #24936E;
       --background-color: #080808;
@@ -87,7 +87,7 @@
       width: 100%;
       transition: background-color 0.3s;
       font-weight: 600;
-		font-family: inherit;
+      font-family: inherit;
     }
 
     input[type="submit"]:hover, .dialog-button:hover {
@@ -163,7 +163,7 @@
     </div>
     <div class="content">
       <div class="info-box">
-		  <h3>Privacy</h3>
+        <h3>Privacy</h3>
         <p>We do not collect your personal data. <br>All user configurations are stored locally in EEPROM.</p>
       </div>
       <div class="info-box">
@@ -173,7 +173,7 @@
           <input type="submit" value="Purge Parameters">
         </form>
       </div>
-      <form method='get' action='setting'>
+      <form id="settingsForm" method='get' action='setting'>
         <h2>Network Setup</h2>
         <label for="ssid">WIFI Name (SSID)</label>
         <input id="ssid" name='ssid' type="text" maxlength="32" placeholder="Enter SSID">
@@ -214,30 +214,38 @@
       </form>
     </div>
   </div>
-	<script>
-document.getElementById('settingsForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  var formData = new FormData(this);
-  
-  fetch('/setting', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-    if(data.success) {
-      alert(data.message);
-      // You can replace alert with a more sophisticated popup if desired
-    } else {
-      alert('An error occurred while saving settings.');
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('An error occurred while saving settings.');
-  });
-});
-</script>
+  <script>
+    document.getElementById('settingsForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      var formData = new FormData(this);
+      
+      fetch('/setting', {
+        method: 'GET',
+        body: new URLSearchParams(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.success) {
+          // Create and show a custom popup
+          var overlay = document.createElement('div');
+          overlay.className = 'dialog-overlay';
+          
+          var popup = document.createElement('div');
+          popup.className = 'dialog-content';
+          popup.innerHTML = '<h2>Success</h2><p>' + data.message + '</p><button class="dialog-button" onclick="this.closest(\'.dialog-overlay\').remove()">Close</button>';
+          
+          overlay.appendChild(popup);
+          document.body.appendChild(overlay);
+        } else {
+          alert('An error occurred while saving settings.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving settings.');
+      });
+    });
+  </script>
 </body>
 </html>
