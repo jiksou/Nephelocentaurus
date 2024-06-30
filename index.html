@@ -212,40 +212,42 @@
 
         <input type="submit" value="Save Configuration">
       </form>
+		<p class="warning">Nephelocentaurus Development Project <br>Open-sourced under GPLv3 at Github.com/Iteinos/Nephelocentaurus<br>© Yisu Fang, Aegisona Applied Apotropaic Systems, 2024</p>
     </div>
   </div>
   <script>
-    document.getElementById('settingsForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+document.getElementById('settingsForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  var formData = new FormData(this);
+  
+  fetch('/setting', {
+    method: 'GET',
+    body: new URLSearchParams(formData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Create and show a custom popup
+      var overlay = document.createElement('div');
+      overlay.className = 'dialog-overlay';
       
-      var formData = new FormData(this);
+      var popup = document.createElement('div');
+      popup.className = 'dialog-content';
+      popup.innerHTML = '<h2>Success</h2><p>' + data.message + '</p><button class="dialog-button" onclick="this.closest(\'.dialog-overlay\').remove()">Close</button>';
       
-      fetch('/setting', {
-        method: 'GET',
-        body: new URLSearchParams(formData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if(data.success) {
-          // Create and show a custom popup
-          var overlay = document.createElement('div');
-          overlay.className = 'dialog-overlay';
-          
-          var popup = document.createElement('div');
-          popup.className = 'dialog-content';
-          popup.innerHTML = '<h2>Success</h2><p>' + data.message + '</p><button class="dialog-button" onclick="this.closest(\'.dialog-overlay\').remove()">Close</button>';
-          
-          overlay.appendChild(popup);
-          document.body.appendChild(overlay);
-        } else {
-          alert('An error occurred while saving settings.');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while saving settings.');
-      });
-    });
+      overlay.appendChild(popup);
+      document.body.appendChild(overlay);
+    } else {
+      alert('An error occurred while saving settings.');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while saving settings.');
+  });
+});
+
   </script>
 </body>
 </html>
