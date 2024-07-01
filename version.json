@@ -1,13 +1,13 @@
 {
-    "version": "16M",
+    "partition": "16M",
     "resources": {
       "firmware": {
         "version": "1",
-        "url": "https://iteinos.github.io/Nephelocentaurus/Nephelocentaurus.ino.bin"
+        "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
       },
       "index": {
         "version": "1",
-        "url": "https://iteinos.github.io/Nephelocentaurus/index.html"
+        "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/index.html"
       },
       "font": {
         "version": "1",
