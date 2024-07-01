@@ -13,8 +13,20 @@
       font-style: normal;
     }
 	  @font-face {
-      font-family: 'githubCustomFont';
+      font-family: 'GithubCustomFont';
       src: url('font.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+	      @font-face {
+      font-family: 'BoldCustomFont';
+      src: url('/Bfont.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+	  @font-face {
+      font-family: 'BoldGithubCustomFont';
+      src: url('Bfont.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -28,7 +40,7 @@
     }
 
     body {
-      font-family: 'CustomFont', 'githubCustomFont', 'Open Sans', sans-serif;
+      font-family: 'CustomFont', 'GithubCustomFont','BoldCustomFont', 'BoldGithubCustomFont', 'Open Sans', sans-serif;
       margin: 0;
       padding: 0;
       background-color: var(--background-color);
@@ -57,7 +69,12 @@
     .content {
       padding: 24px;
     }
-
+    .content h2 {
+      margin: 0px;
+      font-size: 32px;
+      font-weight: 2400;
+		font-family: 'BoldCustomFont', 'BoldGithubCustomFont';
+    }
     h2, h3 {
       color: var(--primary-color);
       margin-top: 32px;
@@ -166,7 +183,7 @@
     <div class="top-bar">
 	<img src="title.svg" alt="Title SVG">
     </svg>
-      <p>Configuration Page</p>
+      <p>Nephelocentaurus Development Project<br>Configuration Interface</p>
     </div>
     <div class="content">
       <div class="info-box">
