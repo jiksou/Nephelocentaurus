@@ -169,21 +169,14 @@
     </div>
     <div class="content">
       <div class="info-box">
-        <h3>Privacy</h3>
-        <p>We do not collect your personal data. <br>All user configurations are stored locally in EEPROM.</p>
-      </div>
-      <div class="info-box">
-        <h3>Configuration Reset</h3>
-        <p>Clear all custom parameters:</p>
-        <form action="/reset" method="get">
-          <input type="submit" value="Purge Parameters">
-        </form>
+        <h3>Privacy Disclaimer</h3>
+        <p>We do not collect your personal data. <br>All user configurations are stored locally in flash memory.</p>
       </div>
       <form id="settingsForm" method='get' action='setting'>
         <h2>Network Setup</h2>
         <label for="ssid">WIFI Name (SSID)</label>
         <input id="ssid" name='ssid' type="text" maxlength="32" placeholder="Enter SSID">
-        <p class="warning">Use 2.4G WiFi (802.11 b/g/n). Latin characters only.</p>
+        <p class="warning">Use 2.4G WiFi (802.11 b/g/n). <br>Characters other than Latin may not be supported due to encoding issues.</p>
 
         <label for="pass">WIFI Password</label>
         <input id="pass" name='pass' type="text" maxlength="64" placeholder="Enter password">
@@ -196,10 +189,10 @@
           <span>:</span>
           <input name='currency_to' type="text" placeholder="To" maxlength="5">
         </div>
-        <p class="warning">3-letter codes. Default: GBP : CNY</p>
+        <p class="warning">3-letter codes. Default is GBP : CNY</p>
 
         <h3>Locale</h3>
-        <p>For timezone and weather data. Auto-set by IP geolocation. Manual override:</p>
+        <p>Locale setting is used for fetching timezone and weather data. By default it uses IP geolocation. However you can specify a location below:</p>
 
         <label for="lat">Latitude</label>
         <input id="lat" name='lat' type="text" maxlength="32" placeholder="e.g. 31.271">
@@ -208,7 +201,7 @@
         <input id="lon" name='lon' type="text" maxlength="32" placeholder="e.g. 120.736">
 
         <h3>API Keys</h3>
-        <p>Default keys use free plans. Use your own if defaults stop working.</p>
+        <p>Default keys may be discontinued in the future. Use your own keys if default keys stop working.</p>
 
         <label for="weather_api_key">OpenWeatherMap API v3.0 Key</label>
         <input id="weather_api_key" name='weather_api_key' type="text" maxlength="64" placeholder="Optional">
@@ -218,6 +211,13 @@
 
         <input type="submit" value="Save Configuration">
       </form>
+		<div class="info-box">
+        <h3>Reset to default</h3>
+        <p>You can clear custom keys by resetting to default.<br>This operation is not required every time.</p>
+        <form action="/reset" method="get">
+          <input type="submit" value="Purge Parameters">
+        </form>
+      </div>
 		<p class="warning">Nephelocentaurus Development Project <br>© Yisu Fang, 2024</p>
     </div>
   </div>
