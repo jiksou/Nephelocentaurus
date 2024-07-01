@@ -1,0 +1,18 @@
+{
+    "version": "16M",
+    "resources": {
+      "firmware": {
+        "version": "1",
+        "url": "https://iteinos.github.io/Nephelocentaurus/16M/Nephelocentaurus.ino.bin"
+      },
+      "index": {
+        "version": "1",
+        "url": "https://iteinos.github.io/Nephelocentaurus/index.html"
+      },
+      "font": {
+        "version": "1",
+        "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/font.ttf"
+      }
+    }
+  }
+  
