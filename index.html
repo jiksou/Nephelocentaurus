@@ -80,7 +80,17 @@
       margin-top: 32px;
       font-weight: 2400;
     }
+h3 {
+  margin-bottom: 2px; /* Reduce bottom margin */
+}
 
+input[type="text"] {
+  margin: 0 0 2px 0; /* Reduce top margin, keep bottom margin */
+}
+
+label {
+  margin-top: 36px; /* Increase top margin to separate sections */
+}
     input[type="text"] {
       width: 100%;
       padding: 12px 16px;
@@ -116,7 +126,30 @@
     input[type="submit"]:hover, .dialog-button:hover {
       background-color: #7C4DFF;
     }
+.header-bar {
+  background-color: #1C1C1C;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  align-items: center;
+	padding: 16px;
+      text-align: center;
+}
 
+.header-bar h2 {
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.header-bar select {
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
     .info-box {
       background-color: var(--surface-color);
       border-left: 4px solid var(--primary-color);
@@ -179,11 +212,12 @@
 </head>
 
 <body>
+		    <div class="header-bar">
+    <p>Nephelocentaurus Development Project<br>Configuration Interface</p>
+  </div>
   <div id="container">
     <div class="top-bar">
-	<img src="title.svg" alt="Title SVG">
-    </svg>
-      <p>Nephelocentaurus Development Project<br>Configuration Interface</p>
+      <p>Yisu Fang, 2024</p>
     </div>
     <div class="content">
       <div class="info-box">
@@ -192,16 +226,22 @@
       </div>
       <form id="settingsForm" method='get' action='setting'>
         <h2>Network Setup</h2>
-        <label for="ssid">WIFI Name (SSID)</label>
+		  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+	<path fill="currentColor" d="M11 14c0-3.36 2.64-6 6-6c2.2 0 4.08 1.13 5.13 2.86L24 8.98A16.88 16.88 0 0 0 12 4C7.31 4 3.07 5.9 0 8.98L12 21l1.86-1.87C12.14 18.09 11 16.2 11 14" />
+	<path fill="currentColor" d="M21 14c0-2.24-1.76-4-4-4s-4 1.76-4 4s1.76 4 4 4c.75 0 1.44-.21 2.03-.56L21.59 20L23 18.59l-2.56-2.56c.35-.59.56-1.28.56-2.03m-6 0c0-1.12.88-2 2-2s2 .88 2 2s-.88 2-2 2s-2-.88-2-2" />
+</svg>
+        <h3>WIFI Name (SSID)</h3>
         <input id="ssid" name='ssid' type="text" maxlength="32" placeholder="Enter SSID">
         <p class="warning">Use 2.4G WiFi (802.11 b/g/n). <br>Characters other than Latin may not be supported due to encoding issues.</p>
 
-        <label for="pass">WIFI Password</label>
+        <h3>WIFI Password</h3>
         <input id="pass" name='pass' type="text" maxlength="64" placeholder="Enter password">
         <p class="warning">Leave empty for open network.</p>
 
-        <h2>Optional Settings</h2>
-        <h3>Currency Conversion</h3>
+        <h2>Currency Conversion</h2>
+		  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32">
+	<path fill="currentColor" d="m9.58 2.584l-.4 5.07c-.02.25.18.47.43.47l5.09-.03c.39-.01.59-.46.33-.74l-1.19-1.28a.282.282 0 0 1 .02-.42c.7-.55 1.61-.88 2.57-.84c1.8.07 3.27 1.46 3.64 3.14c.02.09.1.16.2.16h2.43c.13 0 .23-.12.21-.24c-.44-3.16-3.08-5.75-6.38-5.87c-1.75-.06-3.38.55-4.61 1.61c-.12.1-.29.09-.4-.02l-1.18-1.27a.439.439 0 0 0-.76.26M22.332 29.54l.4-5.07a.442.442 0 0 0-.43-.47l-5.09.03c-.39.01-.59.46-.33.74l1.19 1.28c.12.12.11.32-.02.42c-.7.55-1.61.88-2.57.84c-1.8-.07-3.27-1.46-3.64-3.14a.204.204 0 0 0-.2-.16h-2.43c-.12 0-.23.11-.21.24c.44 3.16 3.08 5.75 6.38 5.87c1.75.06 3.38-.55 4.61-1.61c.12-.1.29-.09.4.02l1.18 1.27c.26.28.73.12.76-.26M6 8a1 1 0 0 0-1 1v1.06c-1.208.18-2.01.745-2.482 1.496C2 12.383 2 13.262 2 13.524v.007c0 .265.002 1.13.546 1.936c.25.37.584.688 1.012.932c.589.336 1.355.532 2.322.532c1.095 0 1.473.41 1.644.699c.222.376.236.81.236.951c0-.004 0 0-.003.01c-.013.064-.073.36-.298.648c-.218.278-.645.622-1.579.622c-.862 0-1.298-.375-1.553-.732a2.253 2.253 0 0 1-.344-.752v-.001a1 1 0 0 0-1.967.36L3 18.56l-.984.177v.003l.001.006l.003.013a1.912 1.912 0 0 0 .033.147a4.25 4.25 0 0 0 .647 1.386A3.662 3.662 0 0 0 5 21.776V23a1 1 0 1 0 2 0v-1.263c.927-.217 1.59-.7 2.033-1.265c.558-.712.727-1.503.727-1.892c0-.219-.006-1.11-.514-1.969c-.56-.945-1.62-1.681-3.366-1.681c-1.17 0-1.539-.379-1.676-.582c-.186-.276-.204-.611-.204-.818c0-.217.015-.596.212-.91c.144-.23.506-.62 1.648-.62c1.05 0 1.454.432 1.652.77a1.937 1.937 0 0 1 .248.793a1 1 0 0 0 2-.057l-1 .024l1-.025v-.009l-.001-.015a2.07 2.07 0 0 0-.012-.163a3.935 3.935 0 0 0-.508-1.558c-.416-.71-1.126-1.364-2.239-1.632V9a1 1 0 0 0-1-1m17.962 2.887a1 1 0 1 0-1.774.923L24.889 17H23a1 1 0 1 0 0 2h2v1h-2a1 1 0 1 0 0 2h2v1a1 1 0 1 0 2 0v-1h2a1 1 0 1 0 0-2h-2v-1h2a1 1 0 1 0 0-2h-1.89l2.702-5.19a1 1 0 0 0-1.774-.923L26 14.802z" />
+</svg>
         <div class="currency-inputs">
           <input name='currency_from' type="text" placeholder="From" maxlength="5">
           <span>:</span>
@@ -209,29 +249,35 @@
         </div>
         <p class="warning">3-letter codes. Default is GBP : CNY</p>
 
-        <h3>Locale</h3>
-        <p>Locale setting is used for fetching timezone and weather data. By default it uses IP geolocation. However you can specify a location below:</p>
+        <h2>Location</h2>
+		  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+	<path fill="currentColor" d="M18.5 10c.5 0 1 .08 1.5.22V8l-6-6H6c-1.11 0-2 .89-2 2v16c0 1.11.89 2 2 2h9.91C14.7 20.41 13 17.78 13 15.5c0-3 2.5-5.5 5.5-5.5M13 3.5L18.5 9H13zm5.5 8.5c-1.9 0-3.5 1.6-3.5 3.5c0 2.6 3.5 6.5 3.5 6.5s3.5-3.9 3.5-6.5c0-1.9-1.6-3.5-3.5-3.5m0 4.8c-.7 0-1.2-.6-1.2-1.2c0-.7.6-1.2 1.2-1.2s1.2.6 1.2 1.2c.1.6-.5 1.2-1.2 1.2" />
+</svg>
+        <p>Location setting is used for fetching timezone and weather data. By default it uses IP geolocation, however you can specify a location below:</p>
 
-        <label for="lat">Latitude</label>
+        <h3>Latitude</h3>
         <input id="lat" name='lat' type="text" maxlength="32" placeholder="e.g. 31.271">
 
-        <label for="lon">Longitude</label>
+        <h3>Longitude</h3>
         <input id="lon" name='lon' type="text" maxlength="32" placeholder="e.g. 120.736">
 
-        <h3>API Keys</h3>
+        <h2>API Keys</h2>
+		  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+	<path fill="currentColor" d="M9.41 20H6.5c-1.5 0-2.82-.5-3.89-1.57C1.54 17.38 1 16.09 1 14.58q0-1.95 1.17-3.48a5.25 5.25 0 0 1 3.08-1.95c.42-1.53 1.25-2.77 2.5-3.72C9 4.5 10.42 4 12 4c1.95 0 3.61.68 4.96 2.04C18.32 7.39 19 9.05 19 11c1.15.13 2.11.63 2.86 1.5c.64.73 1 1.56 1.1 2.5H18a5.01 5.01 0 0 0-4-2c-2.8 0-5 2.2-5 5c0 .72.15 1.39.41 2M23 17v2h-2v2h-2v-2h-2.2c-.4 1.2-1.5 2-2.8 2c-1.7 0-3-1.3-3-3s1.3-3 3-3c1.3 0 2.4.8 2.8 2zm-8 1c0-.5-.4-1-1-1s-1 .5-1 1s.4 1 1 1s1-.5 1-1" />
+</svg>
         <p>Default keys may be discontinued in the future. Use your own keys if default keys stop working.</p>
 
-        <label for="weather_api_key">OpenWeatherMap API v3.0 Key</label>
+        <h3>OpenWeatherMap API v3.0 Key</h3>
         <input id="weather_api_key" name='weather_api_key' type="text" maxlength="64" placeholder="Optional">
 
-        <label for="exchange_api_key">ExchangeRate-API Key</label>
+        <h3>ExchangeRate-API Key</h3>
         <input id="exchange_api_key" name='exchange_api_key' type="text" maxlength="64" placeholder="Optional">
 
         <input type="submit" value="Save Configuration">
       </form>
 		<div class="info-box">
-        <h3>Reset to default</h3>
-        <p>You can clear custom keys by resetting to default.<br>This operation is not required every time.</p>
+        <h3>Clear All Settings</h3>
+        <p>You can always reset parameters to default.<br>This operation is not required every time.</p>
         <form action="/reset" method="get">
           <input type="submit" value="Purge Parameters">
         </form>
