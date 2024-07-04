@@ -2,15 +2,15 @@
   "partition": "16M",
   "resources": {
     "firmware": {
-      "version": "2",
+      "version": "2.1",
       "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
     },
     "index": {
-      "version": "2",
+      "version": "2.1",
       "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/index.html"
     },
     "font": {
-      "version": "2",
+      "version": "2.1",
       "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/font.ttf"
     }
   }
