@@ -1,5 +1,5 @@
 {
-  "partition": "16M",
+  "updated": "20240705",
   "resources": {
     "firmware": {
       "version": "2.2",
