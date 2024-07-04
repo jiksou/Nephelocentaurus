@@ -348,7 +348,6 @@ document.getElementById('settingsForm').addEventListener('submit', function(e) {
   })
   .then(response => response.json())
   .then(data => {
-    // Handle the JSON response
     if (data.success) {
       alert('Settings saved successfully: ' + JSON.stringify(data.config));
     } else {
