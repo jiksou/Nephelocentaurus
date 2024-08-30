@@ -2,7 +2,7 @@
   "updated": "20240830",
   "resources": {
     "firmware": {
-      "version": "3.00",
+      "version": "37.00",
       "url": "https://raw.githubusercontent.com/Iteinos/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
     },
     "index": {
