@@ -3,15 +3,15 @@
   "resources": {
     "firmware": {
       "version": "37.00",
-      "url": "https://raw.githubusercontent.com/jiksou/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
+      "url": "https://raw.githubusercontent.com/CouDeGras/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
     },
     "index": {
       "version": "20241028",
-      "url": "https://raw.githubusercontent.com/jiksou/Nephelocentaurus/main/index.html"
+      "url": "https://raw.githubusercontent.com/CouDeGras/Nephelocentaurus/main/index.html"
     },
     "font": {
       "version": "2.1",
-      "url": "https://raw.githubusercontent.com/jiksou/Nephelocentaurus/main/font.ttf"
+      "url": "https://raw.githubusercontent.com/CouDeGras/Nephelocentaurus/main/font.ttf"
     }
   }
 }
