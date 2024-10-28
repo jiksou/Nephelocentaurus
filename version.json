@@ -1,12 +1,12 @@
 {
-  "updated": "20240830",
+  "updated": "20241028",
   "resources": {
     "firmware": {
       "version": "37.00",
       "url": "https://raw.githubusercontent.com/jiksou/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
     },
     "index": {
-      "version": "2.2",
+      "version": "20241028",
       "url": "https://raw.githubusercontent.com/jiksou/Nephelocentaurus/main/index.html"
     },
     "font": {
