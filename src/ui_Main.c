@@ -29,10 +29,10 @@ void ui_Main_screen_init(void)
     lv_obj_set_flex_align(ui_time, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_label_set_long_mode(ui_time, LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_label_set_text(ui_time, "22:34");
-    ui_object_set_themeable_style_property(ui_time, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Lavander);
-    ui_object_set_themeable_style_property(ui_time, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Lavander);
+    //ui_object_set_themeable_style_property(ui_time, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+    //                                       _ui_theme_color_Lavander);
+    //ui_object_set_themeable_style_property(ui_time, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+     //                                      _ui_theme_alpha_Lavander);
     lv_obj_set_style_text_letter_space(ui_time, -2, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui_time, -1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_time, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -46,10 +46,10 @@ void ui_Main_screen_init(void)
     lv_obj_set_align(ui_weather, LV_ALIGN_CENTER);
     lv_label_set_long_mode(ui_weather, LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_label_set_text(ui_weather, "Weather Description");
-    ui_object_set_themeable_style_property(ui_weather, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Lavander);
-    ui_object_set_themeable_style_property(ui_weather, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Lavander);
+    //ui_object_set_themeable_style_property(ui_weather, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+     //                                      _ui_theme_color_Lavander);
+    //ui_object_set_themeable_style_property(ui_weather, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+    //                                       _ui_theme_alpha_Lavander);
     lv_obj_set_style_text_letter_space(ui_weather, -1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui_weather, -5, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_weather, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -65,10 +65,10 @@ void ui_Main_screen_init(void)
     lv_obj_set_flex_align(ui_temperature, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_label_set_long_mode(ui_temperature, LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_label_set_text(ui_temperature, "32°C 64%");
-    ui_object_set_themeable_style_property(ui_temperature, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Lavander);
-    ui_object_set_themeable_style_property(ui_temperature, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Lavander);
+    //ui_object_set_themeable_style_property(ui_temperature, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+    //                                       _ui_theme_color_Lavander);
+    //ui_object_set_themeable_style_property(ui_temperature, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+    //                                       _ui_theme_alpha_Lavander);
     lv_obj_set_style_text_letter_space(ui_temperature, -1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui_temperature, -1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_temperature, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -80,10 +80,10 @@ void ui_Main_screen_init(void)
     lv_obj_set_align(ui_geolocation, LV_ALIGN_CENTER);
     lv_label_set_long_mode(ui_geolocation, LV_LABEL_LONG_SCROLL_CIRCULAR);
     lv_label_set_text(ui_geolocation, "Guoxiang, Jiangsu");
-    ui_object_set_themeable_style_property(ui_geolocation, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
-                                           _ui_theme_color_Lavander);
-    ui_object_set_themeable_style_property(ui_geolocation, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
-                                           _ui_theme_alpha_Lavander);
+    //ui_object_set_themeable_style_property(ui_geolocation, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
+     //                                      _ui_theme_color_Lavander);
+    //ui_object_set_themeable_style_property(ui_geolocation, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
+     //                                      _ui_theme_alpha_Lavander);
     lv_obj_set_style_text_letter_space(ui_geolocation, -1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui_geolocation, -1, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui_geolocation, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);

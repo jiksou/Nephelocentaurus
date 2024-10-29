@@ -1,6 +1,6 @@
 /*
  * This file is part of Nephelocentaurus(νεφελοκένταυρος) 天馬
- * Copyright (C) 2024 Yisu Fang, Github @jiksou
+ * Copyright (C) 2024 Yisu Fang, Github @CouDeGras
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -362,8 +362,8 @@ unsigned long g_u32WeatherUpdateIntervalMilliseconds = 3600000;  // 1 hour
 const char *g_pszcSSID = "Oneirodyne";
 const char *g_pszcPASS = "Oneirodyne";
 
-const char *g_pszcFirmwareURL = "https://jiksou.github.io/Nephelocentaurus/Nephelocentaurus.ino.bin";
-const char *g_pszcVersionURL = "https://jiksou.github.io/Nephelocentaurus/version.json";
+const char *g_pszcFirmwareURL = "https://CouDeGras.github.io/Nephelocentaurus/Nephelocentaurus.ino.bin";
+const char *g_pszcVersionURL = "https://CouDeGras.github.io/Nephelocentaurus/version.json";
 String g_strCurrentVersion = "36.482";  //current firmware version
 String g_strNewestVersion = "0";
 const char *g_pszcRadioURL = "https://streaming.broadcastradio.com:8572/burnfm";
@@ -440,7 +440,7 @@ void checkForOTAUpdate() {
 bool PerformFileSystemOTAUpdate() {
   lv_scr_load(ui_ota);
   lv_refr_now(NULL);
-  const char *versionUrl = "https://raw.githubusercontent.com/jiksou/Nephelocentaurus/main/version.json";
+  const char *versionUrl = "https://raw.githubusercontent.com/CouDeGras/Nephelocentaurus/main/version.json";
   DynamicJsonDocument localJson(1024);
   DynamicJsonDocument remoteJson(1024);
 
@@ -713,7 +713,7 @@ bool connexio = 0;
 void connectivityCheckTask(void *pvParameters) {
   while (1) {
     vTaskDelay(5000 / portTICK_PERIOD_MS);
-   
+
     // Ping Host
     Serial.println("Ping: " + String(remote_host));
     if (Ping.ping(remote_host) > 0) {
@@ -723,7 +723,89 @@ void connectivityCheckTask(void *pvParameters) {
       connexio = 0;
       Serial.println("Ping Failed");
     }
-     vTaskDelay(pdMS_TO_TICKS(600000));
+    vTaskDelay(pdMS_TO_TICKS(600000));
+  }
+}
+
+// Structure definition
+struct locale_list {
+  String city;         // City name
+  String region;       // Region name
+  String lat, lon;     // Coordinates
+  String temperature;  // Current temperature
+  String humidity;     // Humidity percentage
+  String condition;    // Weather condition
+  int offset;
+  unsigned long lastUpdate = 0;
+
+  bool needsUpdate() {
+    return ((millis() - lastUpdate) >= 3600000) || (lastUpdate == 0);
+  }
+
+  void updateStamp() {
+    lastUpdate = millis();
+  }
+
+  String getToponym() {
+    return capitalizeWords(city);
+  }
+};
+// Global variables
+locale_list locations[3];
+// External function to update locale data
+void updateLocaleData(int locale_page, bool fullUpdate = false) {
+  if (WiFi.status() == WL_CONNECTED) {
+    String serverPath;
+    if (locale_page == 0) {
+      // Get general location data
+      serverPath = "http://ip-api.com/json/?fields=lat,lon,offset,city,regionName,country,currency";
+      g_strJSONBuffer = httpGETRequest(serverPath.c_str());
+      Serial.println(g_strJSONBuffer);
+      deserializeJson(myObject, g_strJSONBuffer);
+
+      // Update primary locale data
+      locations[locale_page].city = String((const char *)myObject["city"]);
+      locations[locale_page].region = String((const char *)myObject["regionName"]);
+      //      locations[locale_page].currency = String((const char *)myObject["currency"]);
+      locations[locale_page].lat = String(myObject["lat"].as<float>(), 3);
+      locations[locale_page].lon = String(myObject["lon"].as<float>(), 3);
+    }
+    serverPath = "https://nominatim.openstreetmap.org/reverse?lat=" + locations[locale_page].lat + "&lon=" + locations[locale_page].lon + "&format=json";
+    g_strJSONBuffer = httpsGETRequest(serverPath.c_str());
+    deserializeJson(myObject, g_strJSONBuffer);
+    if (g_strJSONBuffer.length() == 0) {
+      Serial.println("Error: Empty response from server.");
+    } else {
+      Serial.println(g_strJSONBuffer);
+
+      DeserializationError error = deserializeJson(myObject, g_strJSONBuffer);
+
+      if (error) {
+        Serial.print("Deserialization failed: ");
+        Serial.println(error.c_str());
+      } else {
+        // Check if "address" and "city" fields exist to prevent core panic
+        if (myObject["address"].containsKey("city")) {
+          locations[locale_page].city = String((const char *)myObject["address"]["city"]);
+        } else {
+          Serial.println("City field is missing in the JSON response.");
+          locations[locale_page].city = "Unknown";
+        }
+      }
+    }
+    // Fetch weather data only if a full update or primary locale
+    serverPath = "http://api.openweathermap.org/data/3.0/onecall?lat=" + locations[locale_page].lat + "&lon=" + locations[locale_page].lon + "&exclude=hourly,minutely,alerts&appid=" + g_StrOpenWeatherMapApiKey;
+    g_strJSONBuffer = httpGETRequest(serverPath.c_str());
+    Serial.println(g_strJSONBuffer);
+    deserializeJson(myObject, g_strJSONBuffer);
+    int time_offset = myObject["timezone_offset"];
+    timeClient.setTimeOffset(time_offset);
+    // Update specific weather data for locale
+    locations[locale_page].offset = time_offset;
+    locations[locale_page].condition = String((const char *)myObject["current"]["weather"][0]["description"]);
+    locations[locale_page].temperature = String(myObject["current"]["temp"].as<float>() - 273.15, 0);
+    locations[locale_page].humidity = String(myObject["current"]["humidity"].as<int>());
+    locations[locale_page].updateStamp();
   }
 }
 
@@ -914,47 +996,24 @@ bool checkAndUpdateExchangeRate() {
   return false;  // No update was needed
 }
 
-String lat, lon;
 
-String g_strCity_locale;
-String g_StrRegion_locale;
+// RTOS task daemon, performing periodic updates
 void anemohiereia_daemon(void *parameter) {
-  for (;;) {  // FreeRTOS task loop
+  for (;;) {
     taskYIELD();
-    if (WiFi.status() == WL_CONNECTED) {
-      String serverPath = "http://ip-api.com/json/?fields=lat,lon,offset,city,regionName,country,currency";
-      g_strJSONBuffer = httpGETRequest(serverPath.c_str());
-      Serial.println(g_strJSONBuffer);
-      deserializeJson(myObject, g_strJSONBuffer);
-      g_strCity_locale = String((const char *)myObject["city"]);
-      g_StrRegion_locale = String((const char *)myObject["regionName"]);
-      if (g_strConvertCurrencyFromIndex.length() < 1) g_strConvertCurrencyFromIndex = String((const char *)myObject["currency"]);
-      if (lat.length() == 0 || lon.length() == 0) {
-        lat = String(myObject["lat"].as<float>(), 3);
-        lon = String(myObject["lon"].as<float>(), 3);
-      } else {
-        g_strCity_locale = lat;
-        g_StrRegion_locale = lon;
-      }
-      int time_offset = myObject["offset"];
-      timeClient.setTimeOffset(time_offset);
-      serverPath = "http://api.openweathermap.org/data/3.0/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly,minutely,alerts&appid=" + g_StrOpenWeatherMapApiKey;  //api 3.0
-      Serial.println(serverPath);
-      g_strJSONBuffer = httpGETRequest(serverPath.c_str());
-      Serial.println(g_strJSONBuffer);
-      deserializeJson(myObject, g_strJSONBuffer);
-      time_offset = myObject["timezone_offset"];
-      if (time_offset != 0) timeClient.setTimeOffset(time_offset);  //daylight saving
-      while (!timeClient.update() || !timeClient.forceUpdate()) {
-        Serial.println("Forcing NTP update.");
-        vTaskDelay(10000 / portTICK_PERIOD_MS);
-      }
-      Serial.println(timeClient.getFormattedTime());
-      //checkAndUpdateExchangeRate();
+
+    // Default partial update for primary locale
+    updateLocaleData(uiState.currentSubPage[uiState.currentMode]);
+    while (!timeClient.update() || !timeClient.forceUpdate()) {
+      Serial.println("Forcing NTP update.");
+      vTaskDelay(10000 / portTICK_PERIOD_MS);
     }
-    vTaskDelay(g_u32WeatherUpdateIntervalMilliseconds / portTICK_PERIOD_MS);  // Delay for the set timer period
+    Serial.println(timeClient.getFormattedTime());
+    // Delay for the set update interval
+    vTaskDelay(g_u32WeatherUpdateIntervalMilliseconds / portTICK_PERIOD_MS);
   }
 }
+
 
 String capitalizeWords(String description) {
   bool capitalizeNext = true;  // Flag to indicate when to capitalize
@@ -984,34 +1043,26 @@ bool isWhitespace(char c) {
 }
 
 void lvgl_ui() {
+  // Check if in the main mode
   if (uiState.currentMode == 0) {
+    if (locations[uiState.currentSubPage[uiState.currentMode]].needsUpdate()) updateLocaleData(uiState.currentSubPage[uiState.currentMode]);
+    timeClient.setTimeOffset(locations[uiState.currentSubPage[uiState.currentMode]].offset);
+    // Update time
     String hours = String(timeClient.getHours());
     String minutes = String(timeClient.getMinutes());
     if (minutes.length() < 2) minutes = "0" + minutes;
     lv_label_set_text(ui_time, (hours + ":" + minutes).c_str());
-    String toponym;
-    if (g_strCity_locale != g_StrRegion_locale)
-      toponym = g_strCity_locale + ", " + g_StrRegion_locale;
-    else toponym = g_strCity_locale;
-    toponym = capitalizeWords(toponym);
-    lv_label_set_text(ui_geolocation, toponym.c_str());
-    String descriptio = "";
-    if (myObject.containsKey("current") && myObject["current"].containsKey("weather") && myObject["current"]["weather"].is<JsonArray>() && myObject["current"]["weather"].size() > 0 && myObject["current"]["weather"][0].containsKey("description")) {
-      descriptio = myObject["current"]["weather"][0]["description"].as<String>();
-    }
 
-    lv_label_set_text(ui_weather, capitalizeWords(descriptio).c_str());
+    // Update location name
+    lv_label_set_text(ui_geolocation, locations[uiState.currentSubPage[uiState.currentMode]].getToponym().c_str());
 
-    String temperatura = "";
-    String humiditas = "";
-    if (myObject.containsKey("current") && myObject["current"].containsKey("temp")) {
-      float kelvin = myObject["current"]["temp"].as<float>();
-      temperatura = String(int(kelvin - 273.15));
-    }
-    if (myObject.containsKey("current") && myObject["current"].containsKey("humidity")) {
-      humiditas = String(myObject["current"]["humidity"].as<int>());
-    }
-    lv_label_set_text(ui_temperature, (temperatura + "°C  " + humiditas + "%").c_str());
+    // Update weather description
+    lv_label_set_text(ui_weather, capitalizeWords(locations[uiState.currentSubPage[uiState.currentMode]].condition).c_str());
+
+    // Update temperature and humidity
+    lv_label_set_text(ui_temperature,
+                      (locations[uiState.currentSubPage[uiState.currentMode]].temperature + "°C  " + locations[uiState.currentSubPage[uiState.currentMode]].humidity + "%").c_str());
+
   } else if (uiState.currentMode == 2) {
     checkForOTAUpdate();
     PerformBinaryOTAUpdate();
@@ -1019,8 +1070,10 @@ void lvgl_ui() {
   } else {
     tft.fillScreen(GC9A01A_BLUE);
   }
+
   lv_refr_now(NULL);  // Flush
 }
+
 
 void nephelocentaurus_daemon(void *parameter) {
   for (;;) {  // FreeRTOS task loop
@@ -1059,6 +1112,7 @@ String httpsGETRequest(const char *serverName) {
 
   Serial.print("[HTTPS] begin...\n");
   if (https.begin(*client, serverName)) {  // HTTPS
+    https.addHeader("Accept-Language", "en");
     Serial.print("[HTTPS] GET...\n");
     int httpCode = https.GET();
 
@@ -1222,38 +1276,13 @@ void createWebServer() {
       server.send(400, "application/json", "{\"success\": false, \"message\": \"Invalid JSON\"}");
       return;
     }
-
-    // Extract values from JSON
-    String queried_ssid = doc["ssid"] | "";
-    String queried_pass = doc["pass"] | "";
-    String queried_lat = doc["lat"] | "";
-    String queried_lon = doc["lon"] | "";
-    String queried_weather_api_key = doc["weather_api_key"] | "";
-    String queried_exchange_api_key = doc["exchange_api_key"] | "";
-    String queried_ablative = doc["currency_from"] | "";
-    String queried_allative = doc["currency_to"] | "";
-
-    // Create a new JSON object for saving to file
-    DynamicJsonDocument configDoc(1024);
-    configDoc["ssid"] = queried_ssid;
-    configDoc["pass"] = queried_pass;
-    configDoc["lat"] = queried_lat;
-    configDoc["lon"] = queried_lon;
-    configDoc["weather_api_key"] = queried_weather_api_key;
-    configDoc["exchange_api_key"] = queried_exchange_api_key;
-    configDoc["currency_from"] = queried_ablative;
-    configDoc["currency_to"] = queried_allative;
-
-    String jsonString;
-    serializeJson(configDoc, jsonString);
-
-    bool savedSuccessfully = saveJsonToFFat(jsonString, "/config.json");
+    bool savedSuccessfully = saveJsonToFFat(jsonPayload, "/config.json");
 
     if (savedSuccessfully) {
       Serial.println("Saved configuration:");
-      Serial.println(jsonString);
+      Serial.println(jsonPayload);
 
-      String jsonResponse = "{\"success\": true, \"message\": \"Settings saved successfully. The device will now restart.\", \"config\": " + jsonString + "}";
+      String jsonResponse = "{\"success\": true, \"message\": \"Settings saved successfully. The device will now restart.\", \"config\": " + jsonPayload + "}";
       server.send(200, "application/json", jsonResponse);
 
       delay(100);
@@ -1360,17 +1389,13 @@ void setup() {
   // Assuming you have these global variables defined
   String eeprom_ssid;
   String eeprom_pass;
-  String eeprom_lat;
-  String eeprom_lon;
   String weather_api_key;
-  String exchange_api_key;
-  String exchange_currency_from;
-  String exchange_currency_to;
+
   Serial.println("Reading Config");
   String jsonConfig = readFile(FFat, "/config.json");
   if (jsonConfig.length() > 0) {
     g_bResourceDownloaded = 1;
-    StaticJsonDocument<512> doc;
+    StaticJsonDocument<1024> doc;
     DeserializationError error = deserializeJson(doc, jsonConfig);
 
     if (error) {
@@ -1379,33 +1404,20 @@ void setup() {
     } else {
       eeprom_ssid = doc["ssid"] | "";
       eeprom_pass = keepOnlyASCII(doc["pass"] | "");
-      eeprom_lat = keepOnlyASCII(doc["lat"] | "");
-      eeprom_lon = keepOnlyASCII(doc["lon"] | "");
+      locations[0].lat = keepOnlyASCII(doc["primary_lat"] | "");
+      locations[0].lon = keepOnlyASCII(doc["primary_lon"] | "");
+      locations[1].lat = keepOnlyASCII(doc["secondary_lat"] | "");
+      locations[1].lon = keepOnlyASCII(doc["secondary_lon"] | "");
+      locations[2].lat = keepOnlyASCII(doc["tertiary_lat"] | "");
+      locations[2].lon = keepOnlyASCII(doc["tertiary_lon"] | "");
       weather_api_key = keepOnlyASCII(doc["weather_api_key"] | "");
-      exchange_api_key = keepOnlyASCII(doc["exchange_api_key"] | "");
-      exchange_currency_from = keepOnlyASCII(doc["currency_from"] | "");
-      exchange_currency_to = keepOnlyASCII(doc["currency_to"] | "");
 
-      Serial.println("Config loaded successfully");
-      Serial.println("SSID: " + eeprom_ssid);
-      Serial.println("PASS: " + eeprom_pass);
-      Serial.println("Latitude: " + eeprom_lat);
-      Serial.println("Longitude: " + eeprom_lon);
-      Serial.println("Weather API Key: " + weather_api_key);
-      Serial.println("Exchange API Key: " + exchange_api_key);
-      Serial.println("Currency From: " + exchange_currency_from);
-      Serial.println("Currency To: " + exchange_currency_to);
       if (eeprom_ssid.length() > 0) {
         g_pszcSSID = eeprom_ssid.c_str();
         g_pszcPASS = eeprom_pass.c_str();
       }
       Serial.println(g_pszcSSID);
-      if (eeprom_lat.length() > 0) {
-        lat = eeprom_lat;
-        lon = eeprom_lon;
-      }
       if (weather_api_key.length() > 1) g_StrOpenWeatherMapApiKey = weather_api_key;
-      if (exchange_api_key.length() > 1) g_strCurrencyConversionApiKey = exchange_api_key;
     }
   } else {
     Serial.println("No config file found or empty config");
