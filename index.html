@@ -257,7 +257,7 @@ label {
   </div>
   <div id="container">
     <div class="top-bar">
-      <p>Firmware Version 241029</p>
+      <p>Firmware Version 241030</p>
     </div>
     <div class="content">
       <div class="info-box">
@@ -278,46 +278,50 @@ label {
         <input id="pass" name='pass' type="text" maxlength="64" placeholder="Enter password">
         <p class="warning">Leave empty for an open WIFI.</p></div>
 		  <div class="location-container">
+			  <div class="info-box">
+        <p>WPA Enterprise Authentication (e.g. eduroam)</p>
+			  </div>
     <h3>WPA Enterprise Account</h3>
-    <input id="wpa_enterprise_user" name='wpa_enterprise_user' type="text" maxlength="64" placeholder="Account Name (usually email address)">
-			  <p class="warning">Leave empty if using WPA Personal or open network.</p>
+    <input id="wpa_enterprise_user" name='wpa_enterprise_user' type="text" maxlength="64" placeholder="Account Name (e.g. email address)">
+			  <p class="warning">Leave empty for WPA Personal or open network.</p>
     <h3>WPA Enterprise Password</h3>
     <input id="wpa_enterprise_pass" name='wpa_enterprise_pass' type="text" maxlength="64" placeholder="Account Password">
-    <p class="warning">Leave empty if using WPA Personal or open network.</p>
+    <p class="warning">Leave empty for WPA Personal or open network.</p>
 </div>
 <br>
-		  		  <div class="info-box">
-			  <h3>Advanced Configuration</h3>
-        <p>These are optional settings. Proceed with caution.</p>
-        <button id="toggleRadioStreams">Toggle</button>
-			  </div>
-<div id="radioStreamsContent" style="display: none;">
         <h2>Location </h2>
 		  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
 	<path fill="currentColor" d="M18.5 10c.5 0 1 .08 1.5.22V8l-6-6H6c-1.11 0-2 .89-2 2v16c0 1.11.89 2 2 2h9.91C14.7 20.41 13 17.78 13 15.5c0-3 2.5-5.5 5.5-5.5M13 3.5L18.5 9H13zm5.5 8.5c-1.9 0-3.5 1.6-3.5 3.5c0 2.6 3.5 6.5 3.5 6.5s3.5-3.9 3.5-6.5c0-1.9-1.6-3.5-3.5-3.5m0 4.8c-.7 0-1.2-.6-1.2-1.2c0-.7.6-1.2 1.2-1.2s1.2.6 1.2 1.2c.1.6-.5 1.2-1.2 1.2" />
 </svg>
-        <p>Location setting is used for fetching timezone and weather data. Defaults to Network IP Geolocation:</p>
+        <p>Location setting is used for fetching timezone and weather data.</p>
 <div class="location-container">
-    <h3>Primary Latitude</h3>
-    <input id="primary_lat" name='primary_lat' type="text" maxlength="32" placeholder="Optional">
-    <p class="warning">Enter a float number, maximum 3-digit precision. E.g. 31.270.</p>
+      <div class="info-box">
+        <p>Primary locale defaults to IP Location.</p>
+	    </div>
+        <h3>Primary Latitude</h3>
+    <input id="tertiary_lat" name='primary_lat' type="text" maxlength="32" placeholder="Optional">
+	<p class="warning">Enter a float number</p>
     <h3>Primary Longitude</h3>
-    <input id="primary_lon" name='primary_lon' type="text" maxlength="32" placeholder="Optional">
-    <p class="warning">Enter a float number, maximum 3-digit precision. E.g. 120.741.</p>
+    <input id="tertiary_lon" name='primary_lon' type="text" maxlength="32" placeholder="Optional">
+	<p class="warning">Enter a float number</p>
 </div>
 
 <div class="location-container">
     <h3>Secondary Latitude</h3>
     <input id="secondary_lat" name='secondary_lat' type="text" maxlength="32" placeholder="Optional">
+	<p class="warning">Enter a float number</p>
     <h3>Secondary Longitude</h3>
     <input id="secondary_lon" name='secondary_lon' type="text" maxlength="32" placeholder="Optional">
+	<p class="warning">Enter a float number</p>
 </div>
 
 <div class="location-container">
     <h3>Tertiary Latitude</h3>
     <input id="tertiary_lat" name='tertiary_lat' type="text" maxlength="32" placeholder="Optional">
+	<p class="warning">Enter a float number</p>
     <h3>Tertiary Longitude</h3>
     <input id="tertiary_lon" name='tertiary_lon' type="text" maxlength="32" placeholder="Optional">
+	<p class="warning">Enter a float number</p>
 </div>
 <br><br>
         <h2>API Keys</h2>
@@ -327,13 +331,12 @@ label {
         <p>Default keys may be discontinued in the future. Use your own keys if default keys stop working.</p>
 <div class="location-container">
         <h3>OpenWeatherMap API v3.0 Key</h3>
-        <input id="weather_api_key" name='weather_api_key' type="text" maxlength="64" placeholder="Optional"></div>
-<div class="location-container">
-        <h3>ExchangeRate-API Key</h3>
-        <input id="exchange_api_key" name='exchange_api_key' type="text" maxlength="64" placeholder="Optional"></div>
-<br><br><br>
-</div>
-		  <div class="info-box">
+        <input id="weather_api_key" name='weather_api_key' type="text" maxlength="64" placeholder="Optional">
+		  <p class="warning">Leave empty for default key</p>
+	    </div>
+<br><br>
+
+	    <div class="info-box">
 			  <h3>Save and Reboot</h3>
         <p>After saving, the current session will be terminated.</p>
         <input type="submit" value="Save Configuration">
