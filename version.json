@@ -1,12 +1,12 @@
 {
-  "updated": "20241029",
+  "updated": "202411101",
   "resources": {
     "firmware": {
       "version": "20241029",
       "url": "https://raw.githubusercontent.com/CouDeGras/Nephelocentaurus/main/Nephelocentaurus.ino.bin"
     },
     "index": {
-      "version": "20241029",
+      "version": "20241101",
       "url": "https://raw.githubusercontent.com/CouDeGras/Nephelocentaurus/main/index.html"
     },
     "font": {
